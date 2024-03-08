@@ -37,7 +37,12 @@ export default function BaseLayout({
   return (
     <>
       <Header urlPath={urlPath} />
-      <main className="min-h-[100dvh] max-w-[100vw] text-black dark:text-white">
+      <main
+        className="max-w-[100vw] text-black dark:text-white"
+        style={{
+          minHeight: "calc(100vh - 60px)",
+        }}
+      >
         {children}
       </main>
       {urlPath !== "/nft" && <Footer urlPath={urlPath} />}
