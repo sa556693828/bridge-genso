@@ -6,6 +6,7 @@ import { configureChains, createConfig, WagmiConfig } from "wagmi";
 import { mainnet, polygon } from "wagmi/chains";
 import { alchemyProvider } from "wagmi/providers/alchemy";
 import { publicProvider } from "wagmi/providers/public";
+import BaseLayout from "@/components/layouts/BasicLayout";
 
 const key = process.env.ALCHEMY_API_KEY as string;
 const { chains, publicClient } = configureChains(
@@ -29,7 +30,9 @@ export default function App({ Component, pageProps }: AppProps) {
   return (
     <WagmiConfig config={wagmiConfig}>
       <RainbowKitProvider chains={chains}>
-        <Component {...pageProps} />
+        <BaseLayout>
+          <Component {...pageProps} />
+        </BaseLayout>
       </RainbowKitProvider>
     </WagmiConfig>
   );
