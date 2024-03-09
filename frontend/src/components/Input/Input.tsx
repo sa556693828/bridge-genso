@@ -1,15 +1,38 @@
 import { useState } from "react";
 
-export default function Input() {
-  const [selected, setSelected] = useState<string>("ETH");
-  const [isOpen, setIsOpen] = useState<boolean>(false);
+interface Props {
+  token: string;
+  value?: string;
+  onChange?: (value: string) => void;
+  disable?: boolean;
+}
+
+export default function Input({ token, value, onChange, disable }: Props) {
+  const [inputValue, setInputValue] = useState("");
+  const handleChange = (value: string) => {
+    setInputValue(value);
+  };
   return (
-    <div className="">
+    <div
+      className={`flex relative items-center ${
+        disable
+          ? "pointer-events-none cursor-pointer opacity-50"
+          : "opacity-100"
+      }`}
+    >
       <input
         type="text"
-        className="w-full h-12 rounded-3xl border-2 border-black/20 px-4"
-        placeholder="0x"
+        className={`w-full h-12 rounded-xl border-2 px-4`}
+        placeholder="0"
+        value={value ? value : inputValue}
+        disabled={disable}
+        onChange={
+          onChange
+            ? (e) => onChange(e.target.value)
+            : (e) => handleChange(e.target.value)
+        }
       />
+      <a className="absolute right-6">{token}</a>
     </div>
   );
 }

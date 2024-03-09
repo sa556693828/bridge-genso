@@ -9,6 +9,9 @@ interface FromProps {
   options: Option[];
   onSelect: (option: Option) => void;
   menuValue: Option;
+  inputValue?: string;
+  onChange?: (value: string) => void;
+  inputDisabled?: boolean;
 }
 
 export default function From({
@@ -17,16 +20,21 @@ export default function From({
   options,
   onSelect,
   menuValue,
+  inputValue,
+  onChange,
+  inputDisabled,
 }: FromProps) {
   return (
     <div className="w-full h-[35%] bg-white rounded-3xl shadow-xl flex flex-col justify-between py-12 px-6 gap-4">
       <a className="text-3xl text-gray-700">{title}</a>
       <div className="flex justify-between">
         <Menu options={options} onSelect={onSelect} selected={menuValue} />
-        <div className="flex relative items-center">
-          <Input />
-          <a className="absolute right-6">{selected.token}</a>
-        </div>
+        <Input
+          token={selected.token}
+          value={inputValue}
+          onChange={onChange}
+          disable={inputDisabled}
+        />
       </div>
     </div>
   );

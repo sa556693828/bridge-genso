@@ -3,6 +3,8 @@ import Modal from "@/components/Modal/Modal";
 import { useState } from "react";
 import ETH from "@/components/assets/ethereum.svg";
 import { Option } from "@/types";
+import Demo from "@/components/demo";
+import Footer from "@/components/Footer/Footer";
 
 export default function Home() {
   const options: Option[] = [{ token: "ETH", address: "0x", image: ETH }];
@@ -17,11 +19,13 @@ export default function Home() {
         height: "calc(100vh - 60px)",
       }}
     >
+      {/* <Demo /> */}
       <div className="flex items-center gap-2">
         <a className="text-3xl">Send</a>
         <Menu onSelect={handleSelect} selected={selected} options={options} />
       </div>
       <Modal selected={selected} />
+      <Footer />
     </main>
   );
 }

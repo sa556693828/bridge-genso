@@ -7,10 +7,9 @@ interface Props {
 
 export default function Desktop({ urlPath }: Props) {
   return (
-    <div className="hidden w-full flex-col gap-[50px] pb-[130px] pl-[90px] pt-[119px] text-black lg:flex">
-      <div className="flex flex-col gap-[18px]"></div>
-      <a className="flex text-lg font-bold">
-        7007.Studio © All rights reserved.
+    <div className="hidden w-full justify-center items-center text-black lg:flex">
+      <a className="flex text-xs font-bold">
+        Bridge-Genso © All rights reserved.
       </a>
     </div>
   );

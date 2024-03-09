@@ -3,7 +3,7 @@ import Desktop from "./FooterDesktop";
 import Mobile from "./FooterMobile";
 
 interface Props {
-  urlPath: string;
+  urlPath?: string;
 }
 
 export default function Footer({ urlPath }: Props) {
@@ -11,7 +11,7 @@ export default function Footer({ urlPath }: Props) {
     window.open(link, "_blank");
   };
   return (
-    <footer className="flex w-full bg-bgWhite">
+    <footer className="flex w-full">
       <Desktop />
       <Mobile />
     </footer>

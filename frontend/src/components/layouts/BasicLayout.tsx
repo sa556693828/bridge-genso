@@ -45,7 +45,7 @@ export default function BaseLayout({
       >
         {children}
       </main>
-      {urlPath !== "/nft" && <Footer urlPath={urlPath} />}
+      {/* <Footer urlPath={urlPath} /> */}
     </>
   );
 }
