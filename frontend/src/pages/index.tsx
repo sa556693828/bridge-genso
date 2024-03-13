@@ -1,25 +1,27 @@
+import { useState } from "react";
 import Menu from "@/components/Menu/Menu";
 import Modal from "@/components/Modal/Modal";
-import { useState } from "react";
-import ETH from "@/components/assets/ethereum.svg";
+import MV from "@/components/assets/token.jpeg";
 import { Option } from "@/types";
-import Demo from "@/components/demo";
 import Footer from "@/components/Footer/Footer";
+import { useAccount } from "wagmi";
 
 export default function Home() {
-  const options: Option[] = [{ token: "ETH", address: "0x", image: ETH }];
+  const options: Option[] = [
+    { token: "MV", chainID: 0, address: "0x", image: MV.src },
+  ];
   const [selected, setSelected] = useState<Option>(options[0]);
+  const { isConnected } = useAccount();
   const handleSelect = (option: Option) => {
     setSelected(option);
   };
   return (
     <main
-      className="flex flex-col items-center gap-12 p-12 text-black h-full"
+      className="flex flex-col items-center gap-10 p-12 text-black h-full"
       style={{
         height: "calc(100vh - 60px)",
       }}
     >
-      {/* <Demo /> */}
       <div className="flex items-center gap-2">
         <a className="text-3xl">Send</a>
         <Menu onSelect={handleSelect} selected={selected} options={options} />

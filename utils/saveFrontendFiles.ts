@@ -2,7 +2,7 @@ import fs from "fs";
 import { config } from "hardhat";
 function saveFrontendFiles(contractName: string, contractAddress: string) {
   fs.appendFile(
-    `./frontend/utils/constants.ts`,
+    `./frontend/src/utils/constants.ts`,
     `\nexport const ${contractName} = '${contractAddress}'`,
     (err) => {
       if (err) {

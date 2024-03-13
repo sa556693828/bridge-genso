@@ -22,7 +22,7 @@ export default function Input({ token, value, onChange, disable }: Props) {
     >
       <input
         type="text"
-        className={`w-full h-12 rounded-xl border-2 px-4`}
+        className={`w-full h-12 rounded-xl px-4 shadow-inner2xl outline-none`}
         placeholder="0"
         value={value ? value : inputValue}
         disabled={disable}

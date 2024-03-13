@@ -7,7 +7,7 @@ interface Props {
 
 export default function Desktop({ urlPath }: Props) {
   return (
-    <div className="hidden w-full justify-center items-center text-black lg:flex">
+    <div className="hidden w-full justify-center items-center text-black lg:flex pb-4">
       <a className="flex text-xs font-bold">
         Bridge-Genso © All rights reserved.
       </a>

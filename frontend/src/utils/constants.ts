@@ -1,41 +1,43 @@
-export const TOKEN_ETH_ADDRESS = '0xD445A2Ab9e782Aa0b9f18dC815dEa4324BE25158'
-export const TOKEN_BSC_ADDRESS = '0x291846B5bcA36e24232B54e4232537cced31614a'
-export const TOKEN_MATIC_ADDRESS = '0x37b75bb10EFD59026D45C8b84bD780189BcD2936'
+export const TOKEN_ETH_ADDRESS = "0xd2e3C2F6d5166BB86F6808BDD1940e97AeFe5404";
+export const TOKEN_BSC_ADDRESS = "0x0bD9bc29Edc675709e96be4640d0bEB833374c75";
+export const TOKEN_MATIC_ADDRESS = "0xE9ae2EB3A6825C7E6d3793BE7786748f51436b91";
 
-export const BRIDGE_ETH_ADDRESS = '0x844b76173E34b17257c16878De57c1BcD8a77B93'
-export const BRIDGE_MATIC_ADDRESS = '0xCCb28635ec4662cfaEbFe9A9D3fbAceea9AB7110'
-export const BRIDGE_BSC_ADDRESS = '0x8d11D5879446483fE856f5B2B7747A3e27551660';
+export const BRIDGE_BSC_ADDRESS = "0xE4A6Cd1123C04E11E2F1f10b85FC72372f49904D";
+export const BRIDGE_ETH_ADDRESS = "0x3a79873362AFd49E01B13eC31559c53B28dDF7B8";
+export const BRIDGE_MATIC_ADDRESS =
+  "0x5Dc5dE29C8F811Dc0FAb6934d10e692f600098D9";
 
 export const token_address = (id: number): string => {
-    const address: { [id: number]: string } = {
-        5: TOKEN_ETH_ADDRESS,
-        80001: TOKEN_MATIC_ADDRESS
-    }
-    return id ? address[id] : ''
+  const address: { [id: number]: string } = {
+    11155111: TOKEN_ETH_ADDRESS,
+    97: TOKEN_BSC_ADDRESS,
+    80001: TOKEN_MATIC_ADDRESS,
+  };
+  return id ? address[id] : "";
 };
 
 export const bridge_address = (id: number): string => {
-    const address: { [_id: number]: string } = {
-        5: BRIDGE_ETH_ADDRESS,
-        80001: BRIDGE_MATIC_ADDRESS
-    }
-    return address[id]
+  const address: { [_id: number]: string } = {
+    11155111: BRIDGE_ETH_ADDRESS,
+    97: BRIDGE_BSC_ADDRESS,
+    80001: BRIDGE_MATIC_ADDRESS,
+  };
+  return address[id];
 };
 
 export const etherscan_address = (id: number, blockHash: string): string => {
-    const address: { [_id: number]: string } = {
-        5: `https://goerli.etherscan.io/tx/${blockHash}`,
-        80001: `https://mumbai.polygonscan.com/tx/${blockHash}`
-    }
-    return address[id]
+  const address: { [_id: number]: string } = {
+    11155111: `https://sepolia.etherscan.io/tx/${blockHash}`,
+    97: `https://testnet.bscscan.com/tx/${blockHash}`,
+    80001: `https://mumbai.polygonscan.com/tx/${blockHash}`,
+  };
+  return address[id];
 };
 export const token_name = (id: number): string => {
-    const name: { [_id: number]: string } = {
-        5: 'gETH',
-        80001: 'mETH'
-    }
-    return name[id]
+  const name: { [_id: number]: string } = {
+    11155111: "MV",
+    97: "MV",
+    80001: "MV",
+  };
+  return name[id];
 };
- export const bETH = '0x3b853eF9c09d0069B58f3DEF62827080823069A7'
- export const bridgeBSC = '0x3b853eF9c09d0069B58f3DEF62827080823069A7'
- export const mETH = '0x3b853eF9c09d0069B58f3DEF62827080823069A7'

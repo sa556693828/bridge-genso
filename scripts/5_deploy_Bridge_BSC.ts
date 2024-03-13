@@ -10,7 +10,8 @@ async function main() {
   const bridge = await Bridge.deploy(
     VALIDATOR_ADDRESS,
     TOKEN_BSC_ADDRESS,
-    chainID_BSC
+    chainID_BSC,
+    true
   );
   await bridge.deployed();
   console.log(

@@ -8,25 +8,19 @@ import {
   polygon,
   sepolia,
   polygonMumbai,
-  goerli,
   bsc,
+  bscTestnet,
 } from "wagmi/chains";
 import BaseLayout from "@/components/layouts/BasicLayout";
-import { createPublicClient, http } from "viem";
 import { publicProvider } from "wagmi/providers/public";
+import { infuraProvider } from "@wagmi/core/providers/infura";
 
-const key = process.env.ALCHEMY_API_KEY as string;
+const key = process.env.NEXT_PUBLIC_ALCHEMY_API_KEY as string;
+const infuraKey = process.env.NEXT_PUBLIC_INFURA_API_KEY as string;
 
 const { chains, publicClient } = configureChains(
-  [mainnet, sepolia, goerli, bsc, polygon, polygonMumbai],
-  [
-    publicProvider(),
-    publicProvider(),
-    publicProvider(),
-    publicProvider(),
-    publicProvider(),
-    publicProvider(),
-  ]
+  [sepolia, polygonMumbai, bscTestnet],
+  [infuraProvider({ apiKey: infuraKey }), publicProvider()]
 );
 const { connectors } = getDefaultWallets({
   appName: "Demo",
