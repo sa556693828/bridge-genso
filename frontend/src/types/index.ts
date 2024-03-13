@@ -3,6 +3,7 @@ export interface Option {
   chainID: number;
   address: string;
   image: string;
+  scanWeb: string;
 }
 export interface SwapProps {
   fromChainID: number;

@@ -15,22 +15,36 @@ interface ModalProps {
 
 export default function Modal({ selected }: ModalProps) {
   const options = [
-    { token: "Select Network", chainID: 0, address: "", image: undefined },
+    {
+      token: "Select Network",
+      chainID: 0,
+      address: "",
+      image: undefined,
+      scanWeb: "",
+    },
     // { token: "Ethereum", chainID: 1, address: "0x", image: ETH },
     // { token: "Binance", chainID: 0, address: "0x", image: bnb },
     // { token: "Polygon", chainID: 0, address: "0x", image: matic },
-    { token: "Goerli", chainID: 5, address: token_address(5), image: ETH },
+    {
+      token: "Sepolia",
+      chainID: 11155111,
+      address: token_address(11155111),
+      image: ETH,
+      scanWeb: "https://sepolia.etherscan.io/",
+    },
     {
       token: "Mumbai",
       chainID: 80001,
       address: token_address(80001),
       image: matic,
+      scanWeb: "https://mumbai.polygonscan.com/",
     },
     {
       token: "BscTestnet",
       chainID: 97,
       address: token_address(97),
       image: bnb,
+      scanWeb: "https://testnet.bscscan.com/",
     },
   ];
   const [fromChain, setFromChain] = useState<Option>(options[1]);
@@ -55,7 +69,6 @@ export default function Modal({ selected }: ModalProps) {
     if (!isValidInput) return;
     if (value === "") return setSendValue(undefined);
     const userInput = normalizeInput(value);
-    console.log("value", Number(userInput));
     setSendValue(userInput);
   };
   const handleSwitch = () => {
@@ -95,7 +108,7 @@ export default function Modal({ selected }: ModalProps) {
           inputDisabled={true}
         />
       </div>
-      <SendConfig from={fromChain} to={toChain} sendValue={Number(sendValue)} />
+      <SendConfig from={fromChain} to={toChain} sendValue={sendValue} />
     </>
   );
 }

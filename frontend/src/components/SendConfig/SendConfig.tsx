@@ -2,28 +2,23 @@ import { useEffect, useState } from "react";
 import useSwap from "@/hooks/useSwap";
 import { Option, SwapProps } from "@/types";
 import { useAccount, useNetwork, useSwitchNetwork } from "wagmi";
+import { toast } from "react-hot-toast";
 
 interface SendProps {
   from: Option;
   to: Option;
-  sendValue: number;
+  sendValue?: string;
 }
 
 export default function SendConfig({ from, to, sendValue }: SendProps) {
   const [isLoading, setIsLoading] = useState(false);
   const { chain } = useNetwork();
-  const {
-    chains,
-    error,
-    isLoading: switchLoading,
-    pendingChainId,
-    switchNetwork,
-  } = useSwitchNetwork();
-  const [txHash, setTxHash] = useState<string | undefined>();
+  const { switchNetwork } = useSwitchNetwork();
+  const [txHash, setTxHash] = useState<string | undefined>("");
   const swapDatas: SwapProps = {
     fromChainID: from.chainID,
     //TODO: 確認浮點數
-    value: sendValue * 10000000000000000,
+    value: Number(sendValue) * 10000000000000000,
     toChainID: to.chainID,
   };
   const { swapData, isSwapSuccess, isSwapError, swapWrite } =
@@ -31,9 +26,14 @@ export default function SendConfig({ from, to, sendValue }: SendProps) {
 
   const handleSend = async () => {
     console.log("swapDatas", swapDatas);
-    //TODO: switch chain
+    // const loadingToast = toast.loading("Sending...");
     if (from.chainID === 0 || to.chainID === 0) return;
-    if (sendValue === undefined || sendValue === 0) return;
+    if (sendValue === undefined || sendValue === "0") return;
+    if (from.chainID !== chain?.id) {
+      console.log("switching chain");
+      await switchNetwork!(from.chainID);
+      return;
+    }
     //TODO: toast
     setIsLoading(true);
     try {
@@ -45,25 +45,14 @@ export default function SendConfig({ from, to, sendValue }: SendProps) {
   useEffect(() => {
     if (isSwapSuccess) {
       if (swapData) {
-        setTxHash(swapData?.hash);
-        // toast.closeAll();
-        // toast({
-        //   title: "Swap Success",
-        //   description:"",
-        //   status: "success",
-        //   duration: 9000,
-        //   isClosable: true,
-        // });
+        setTxHash(`${from.scanWeb}tx/${swapData?.hash}`);
+        toast.remove();
+        toast.success("success");
       }
       setIsLoading(false);
     } else if (isSwapError) {
-      // toast.closeAll();
-      // toast({
-      //   title: "Swap Fail",
-      //   status: "error",
-      //   duration: 9000,
-      //   isClosable: true,
-      // });
+      toast.remove();
+      toast.error("fail");
       setIsLoading(false);
     }
   }, [isSwapError, isSwapSuccess, swapData]);
@@ -83,17 +72,25 @@ export default function SendConfig({ from, to, sendValue }: SendProps) {
       <div className="w-full flex justify-end">
         {/* <button>Approve</button> */}
         <button
-          className="shadow-2xl w-full px-3 py-3 bg-button rounded-2xl hover:shadow active:shadow-lg"
+          className="shadow-2xl w-full px-3 py-3 bg-button flex justify-center items-center rounded-2xl hover:shadow active:shadow-lg"
           onClick={handleSend}
-          // onClick={() => console.log("swapWrite", from.address)}
         >
-          Send
+          {isLoading ? <span className="loader" /> : "Send"}
         </button>
       </div>
       {txHash && (
-        <div className="w-full flex justify-between">
-          <a className="text-gray-600 font-semibold text-xl">TxHash</a>
-          <a className="text-gray-600 font-semibold text-xl">{txHash}</a>
+        <div className="w-full flex gap-4">
+          <a className="font-bold">txHash:</a>
+          <a
+            href={`${txHash}`}
+            target="_blank"
+            className="underline underline-offset-4"
+          >
+            <strong>
+              {txHash?.substring(0, 35)}. . .
+              {txHash?.substring(txHash.length - 3, txHash.length)}
+            </strong>
+          </a>
         </div>
       )}
     </div>

@@ -1,8 +1,4 @@
 import React, { useContext, useEffect, useState } from "react";
-import { BsChevronLeft } from "react-icons/bs";
-import Image from "next/image";
-import { FaTelegramPlane } from "react-icons/fa";
-import { FaXTwitter } from "react-icons/fa6";
 import { useRouter } from "next/router";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 

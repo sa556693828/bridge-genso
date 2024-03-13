@@ -8,7 +8,7 @@ import { useAccount } from "wagmi";
 
 export default function Home() {
   const options: Option[] = [
-    { token: "MV", chainID: 0, address: "0x", image: MV.src },
+    { token: "MV", chainID: 0, address: "0x", image: MV.src, scanWeb: "" },
   ];
   const [selected, setSelected] = useState<Option>(options[0]);
   const { isConnected } = useAccount();

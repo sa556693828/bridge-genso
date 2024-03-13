@@ -14,6 +14,7 @@ import {
 import BaseLayout from "@/components/layouts/BasicLayout";
 import { publicProvider } from "wagmi/providers/public";
 import { infuraProvider } from "@wagmi/core/providers/infura";
+import { Toaster } from "react-hot-toast";
 
 const key = process.env.NEXT_PUBLIC_ALCHEMY_API_KEY as string;
 const infuraKey = process.env.NEXT_PUBLIC_INFURA_API_KEY as string;
@@ -38,6 +39,21 @@ export default function App({ Component, pageProps }: AppProps) {
     <WagmiConfig config={wagmiConfig}>
       <RainbowKitProvider chains={chains}>
         <BaseLayout>
+          <Toaster
+            toastOptions={{
+              style: {
+                background: "#0F0F0F",
+                paddingTop: "6px",
+                paddingBottom: "6px",
+                paddingRight: "10px",
+                paddingLeft: "10px",
+                border: "1px solid #B4FF78",
+                color: "#B4FF78",
+                fontSize: "12px",
+                fontFamily: "Digital Numbers",
+              },
+            }}
+          />
           <Component {...pageProps} />
         </BaseLayout>
       </RainbowKitProvider>

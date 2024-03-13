@@ -1,5 +1,5 @@
 import { useAccount, useContractWrite } from "wagmi";
-import { token_address } from "@/utils/constants";
+import { bridge_address } from "@/utils/constants";
 import bridge from "@/components/abi/bridge.json";
 import { useState, useEffect } from "react";
 import { SwapProps } from "@/types";
@@ -13,7 +13,7 @@ const useSwap = ({ fromChainID, value, toChainID }: SwapProps) => {
   });
 
   const { data, isSuccess, isError, write } = useContractWrite({
-    address: token_address(fromChainID) as `0x${string}`,
+    address: bridge_address(fromChainID) as `0x${string}`,
     abi: bridge.abi,
     functionName: "swap",
     args: [address, value, nonce, fromChainID, fromToken, toToken, toChainID],
