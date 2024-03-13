@@ -16,7 +16,6 @@ import { publicProvider } from "wagmi/providers/public";
 import { infuraProvider } from "@wagmi/core/providers/infura";
 import { Toaster } from "react-hot-toast";
 
-const key = process.env.NEXT_PUBLIC_ALCHEMY_API_KEY as string;
 const infuraKey = process.env.NEXT_PUBLIC_INFURA_API_KEY as string;
 
 const { chains, publicClient } = configureChains(

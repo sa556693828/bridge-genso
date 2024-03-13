@@ -8,6 +8,7 @@ import { Option } from "@/types";
 import { token_address } from "@/utils/constants";
 import SendConfig from "../SendConfig/SendConfig";
 import { normalizeInput } from "@/helper/normalizeInput";
+import { useAccount, useBalance } from "wagmi";
 
 interface ModalProps {
   selected: Option;
@@ -50,6 +51,19 @@ export default function Modal({ selected }: ModalProps) {
   const [fromChain, setFromChain] = useState<Option>(options[1]);
   const [toChain, setToChain] = useState<Option>(options[0]);
   const [sendValue, setSendValue] = useState<string | undefined>(undefined);
+  const { address } = useAccount();
+  const { data } = useBalance({
+    address: address,
+    token: token_address(fromChain.chainID) as `0x${string}`,
+    chainId: fromChain.chainID,
+    watch: true,
+  });
+  const { data: toBalance } = useBalance({
+    address: address,
+    token: token_address(toChain.chainID) as `0x${string}`,
+    chainId: toChain.chainID,
+    watch: true,
+  });
 
   const handleFromSelect = (option: Option) => {
     setFromChain(option);
@@ -80,9 +94,6 @@ export default function Modal({ selected }: ModalProps) {
   return (
     <>
       <div className="w-[60%] flex-col items-center flex gap-4">
-        {/* <button onClick={() => console.log("sendValue", sendValue)}>
-        asdasdasdas
-      </button> */}
         <From
           title="From"
           selected={selected}
@@ -91,6 +102,7 @@ export default function Modal({ selected }: ModalProps) {
           menuValue={fromChain}
           inputValue={sendValue}
           onChange={handleSendValue}
+          balance={fromChain.chainID === 0 ? "" : data?.formatted}
         />
         <div
           className="w-12 h-12 rounded-full flex items-center cursor-pointer justify-center hover:bg-black/20 active:bg-black/60 transition-all"
@@ -106,9 +118,15 @@ export default function Modal({ selected }: ModalProps) {
           menuValue={toChain}
           inputValue={sendValue}
           inputDisabled={true}
+          balance={toChain.chainID === 0 ? "" : toBalance?.formatted}
         />
       </div>
-      <SendConfig from={fromChain} to={toChain} sendValue={sendValue} />
+      <SendConfig
+        from={fromChain}
+        to={toChain}
+        sendValue={sendValue}
+        balance={data?.formatted}
+      />
     </>
   );
 }

@@ -32,7 +32,7 @@ export default function Input({ token, value, onChange, disable }: Props) {
             : (e) => handleChange(e.target.value)
         }
       />
-      <a className="absolute right-6">{token}</a>
+      <a className="absolute right-6 bg-white font-bold pl-2">{token}</a>
     </div>
   );
 }

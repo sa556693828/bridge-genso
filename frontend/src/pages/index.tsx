@@ -11,7 +11,6 @@ export default function Home() {
     { token: "MV", chainID: 0, address: "0x", image: MV.src, scanWeb: "" },
   ];
   const [selected, setSelected] = useState<Option>(options[0]);
-  const { isConnected } = useAccount();
   const handleSelect = (option: Option) => {
     setSelected(option);
   };

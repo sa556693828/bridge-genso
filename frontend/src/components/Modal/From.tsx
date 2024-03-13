@@ -12,6 +12,7 @@ interface FromProps {
   inputValue?: string;
   onChange?: (value: string) => void;
   inputDisabled?: boolean;
+  balance?: string;
 }
 
 export default function From({
@@ -23,10 +24,20 @@ export default function From({
   inputValue,
   onChange,
   inputDisabled,
+  balance,
 }: FromProps) {
+  const truncatedNumber = Math.floor(Number(balance) * 1e5) / 1e5;
   return (
     <div className="w-full h-[35%] bg-white rounded-3xl shadow-xl flex flex-col justify-between py-12 px-6 gap-4">
-      <a className="text-3xl text-gray-700">{title}</a>
+      <div className="flex w-full justify-between">
+        <a className="text-3xl text-gray-700">{title}</a>
+        <a
+          className="text-xl text-gray-500 cursor-pointer hover:text-black transition-all"
+          onClick={balance && onChange ? () => onChange(balance) : () => {}}
+        >
+          Balance : {truncatedNumber}
+        </a>
+      </div>
       <div className="flex justify-between">
         <Menu options={options} onSelect={onSelect} selected={menuValue} />
         <Input

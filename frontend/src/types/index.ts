@@ -6,7 +6,5 @@ export interface Option {
   scanWeb: string;
 }
 export interface SwapProps {
-  fromChainID: number;
-  value: number;
-  toChainID: number;
+  config: any;
 }
