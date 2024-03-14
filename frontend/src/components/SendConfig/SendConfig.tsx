@@ -42,7 +42,7 @@ export default function SendConfig({
     functionName: "swap",
     args: [
       address,
-      Number(sendValue) * 10000000000000000,
+      Number(sendValue) * 1000000000000000000,
       nonce,
       from.chainID,
       fromToken,
