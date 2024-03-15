@@ -12,15 +12,15 @@ interface MenuProps {
 export default function Menu({ options, onSelect, selected }: MenuProps) {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   return (
-    <div className="w-fit relative">
+    <div className="relative w-fit">
       <button
-        className="bg-[#c7dfe9] text-stone-700 px-4 rounded-3xl h-12 w-fit flex items-center justify-between"
+        className="flex h-12 w-fit items-center justify-between rounded-3xl bg-[#c7dfe9] px-4 text-stone-700"
         onClick={() => setIsOpen(!isOpen)}
       >
         {selected.image && (
           <Image src={selected.image} alt="token" width={30} height={30} />
         )}
-        <p className="text-lg px-2">{selected.token}</p>
+        <p className="px-2 text-lg">{selected.token}</p>
         <MdArrowDropDown
           size={20}
           className={`${
@@ -32,14 +32,14 @@ export default function Menu({ options, onSelect, selected }: MenuProps) {
       <div
         className={`${
           isOpen
-            ? "h-fit opacity-100 cursor-pointer"
-            : "h-0 opacity-0 pointer-events-none"
-        } absolute shadow-2xl bg-white transition-all top-[50px] rounded-lg z-50 min-w-44 py-2`}
+            ? "h-fit cursor-pointer opacity-100"
+            : "pointer-events-none h-0 opacity-0"
+        } absolute top-[50px] z-50 min-w-44 rounded-lg bg-white py-2 shadow-2xl transition-all`}
       >
         {options.map((option, index) => (
           <div
             key={index}
-            className="w-full flex gap-[10px] hover:bg-purple-400 items-center transition-all duration-500 h-12 px-5"
+            className="flex h-12 w-full items-center gap-[10px] px-5 transition-all duration-500 hover:bg-purple-400"
             onClick={() => {
               onSelect(option);
               setIsOpen(false);

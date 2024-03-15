@@ -112,28 +112,28 @@ export default function SendConfig({
   }, [isSwapError, isSwapSuccess, swapData]);
 
   return (
-    <div className="w-1/2 h-full flex-col items-start flex gap-6">
-      <div className="w-full flex justify-between">
-        <a className="text-gray-600 font-semibold text-xl">Fees</a>
-        <a className="text-gray-600 font-semibold text-xl">0.0001 ETH</a>
+    <div className="flex h-full w-1/2 flex-col items-start gap-6">
+      <div className="flex w-full justify-between">
+        <a className="text-xl font-semibold text-gray-600">Fees</a>
+        <a className="text-xl font-semibold text-gray-600">0.0001 ETH</a>
       </div>
-      <div className="w-full flex justify-between">
-        <a className="text-gray-600 font-semibold text-xl">
+      <div className="flex w-full justify-between">
+        <a className="text-xl font-semibold text-gray-600">
           Estimated Received
         </a>
-        <a className="text-gray-600 font-semibold text-xl">0.0001 MV</a>
+        <a className="text-xl font-semibold text-gray-600">{sendValue} MV</a>
       </div>
-      <div className="w-full flex justify-end">
+      <div className="flex w-full justify-end">
         {/* <button>Approve</button> */}
         <button
-          className="shadow-2xl w-full px-3 py-3 bg-button flex justify-center items-center rounded-2xl hover:shadow active:shadow-lg"
+          className="flex w-full items-center justify-center rounded-2xl bg-button px-3 py-3 shadow-2xl hover:shadow active:shadow-lg"
           onClick={handleSend}
         >
           {isLoading ? <span className="loader" /> : "Send"}
         </button>
       </div>
       {txHash && (
-        <div className="w-full flex gap-4">
+        <div className="flex w-full gap-4">
           <a className="font-bold">txHash:</a>
           <a
             href={`${txHash}`}

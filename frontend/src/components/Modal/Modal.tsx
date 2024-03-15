@@ -93,7 +93,7 @@ export default function Modal({ selected }: ModalProps) {
 
   return (
     <>
-      <div className="w-[60%] flex-col items-center flex gap-4">
+      <div className="flex w-[60%] flex-col items-center gap-4">
         <From
           title="From"
           selected={selected}
@@ -105,7 +105,7 @@ export default function Modal({ selected }: ModalProps) {
           balance={fromChain.chainID === 0 ? "" : data?.formatted}
         />
         <div
-          className="w-12 h-12 rounded-full flex items-center cursor-pointer justify-center hover:bg-black/20 active:bg-black/60 transition-all"
+          className="flex h-12 w-12 cursor-pointer items-center justify-center rounded-full transition-all hover:bg-black/20 active:bg-black/60"
           onClick={handleSwitch}
         >
           <FaArrowDown />

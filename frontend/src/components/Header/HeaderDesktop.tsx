@@ -21,7 +21,7 @@ export default function Desktop({ urlPath, openLink }: Props) {
 
   return (
     <>
-      <div className="z-50 h-[60px] hidden items-center justify-between md:flex px-12">
+      <div className="z-50 hidden h-[60px] items-center justify-between px-12 md:flex">
         {/* <ConnectButton /> */}
         <div></div>
         <ConnectButton />

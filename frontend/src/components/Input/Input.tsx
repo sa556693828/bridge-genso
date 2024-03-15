@@ -14,7 +14,7 @@ export default function Input({ token, value, onChange, disable }: Props) {
   };
   return (
     <div
-      className={`flex relative items-center ${
+      className={`relative flex items-center ${
         disable
           ? "pointer-events-none cursor-pointer opacity-50"
           : "opacity-100"
@@ -22,7 +22,7 @@ export default function Input({ token, value, onChange, disable }: Props) {
     >
       <input
         type="text"
-        className={`w-full h-12 rounded-xl px-4 shadow-inner2xl outline-none`}
+        className={`h-12 w-full rounded-xl px-4 shadow-inner2xl outline-none`}
         placeholder="0"
         value={value ? value : inputValue}
         disabled={disable}
@@ -32,7 +32,7 @@ export default function Input({ token, value, onChange, disable }: Props) {
             : (e) => handleChange(e.target.value)
         }
       />
-      <a className="absolute right-6 bg-white font-bold pl-2">{token}</a>
+      <a className="absolute right-6 bg-white pl-2 font-bold">{token}</a>
     </div>
   );
 }

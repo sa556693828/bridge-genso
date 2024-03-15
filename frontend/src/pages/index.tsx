@@ -16,7 +16,7 @@ export default function Home() {
   };
   return (
     <main
-      className="flex flex-col items-center gap-10 p-12 text-black h-full"
+      className="flex h-full flex-col items-center gap-10 p-12 text-black"
       style={{
         height: "calc(100vh - 60px)",
       }}

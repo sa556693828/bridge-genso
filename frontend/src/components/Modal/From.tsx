@@ -28,11 +28,11 @@ export default function From({
 }: FromProps) {
   const truncatedNumber = Math.floor(Number(balance) * 1e5) / 1e5;
   return (
-    <div className="w-full h-[35%] bg-white rounded-3xl shadow-xl flex flex-col justify-between py-12 px-6 gap-4">
+    <div className="flex h-[35%] w-full flex-col justify-between gap-4 rounded-3xl bg-white px-6 py-12 shadow-xl">
       <div className="flex w-full justify-between">
         <a className="text-3xl text-gray-700">{title}</a>
         <a
-          className="text-xl text-gray-500 cursor-pointer hover:text-black transition-all"
+          className="cursor-pointer text-xl text-gray-500 transition-all hover:text-black"
           onClick={balance && onChange ? () => onChange(balance) : () => {}}
         >
           Balance : {truncatedNumber}

@@ -9,12 +9,12 @@ export default function To() {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const options = [{ token: "ETH", address: "0x" }];
   return (
-    <div className="w-1/2 h-full flex-col items-center flex justify-between">
-      <div className="w-full h-[45%] bg-white">ss</div>
-      <div className="w-12 h-12 rounded-full flex items-center cursor-pointer justify-center hover:bg-black/20 active:bg-black/60 transition-all">
+    <div className="flex h-full w-1/2 flex-col items-center justify-between">
+      <div className="h-[45%] w-full bg-white">ss</div>
+      <div className="flex h-12 w-12 cursor-pointer items-center justify-center rounded-full transition-all hover:bg-black/20 active:bg-black/60">
         <FaArrowDown />
       </div>
-      <div className="w-full h-[45%] bg-white">ss</div>
+      <div className="h-[45%] w-full bg-white">ss</div>
     </div>
   );
 }
