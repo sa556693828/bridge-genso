@@ -64,7 +64,6 @@ export default function SendConfig({
     isError: isSwapError,
     write: swapWrite,
   } = useContractWrite(config);
-  console.log("toChainBalance", toChainBalance?.formatted);
 
   const handleSend = async () => {
     if (from.chainID === 0 || to.chainID === 0) {
