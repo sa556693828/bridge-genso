@@ -3,6 +3,8 @@ import useSwap from "@/hooks/useSwap";
 import { Option, SwapProps } from "@/types";
 import {
   useAccount,
+  useBalance,
+  useContractRead,
   useContractWrite,
   useNetwork,
   usePrepareContractWrite,
@@ -10,7 +12,8 @@ import {
 } from "wagmi";
 import { toast } from "react-hot-toast";
 import bridge from "@/components/abi/bridge.json";
-import { bridge_address } from "@/utils/constants";
+import token from "@/components/abi/token.json";
+import { bridge_address, token_address } from "@/utils/constants";
 
 interface SendProps {
   from: Option;
@@ -35,7 +38,12 @@ export default function SendConfig({
   const [nonce, setNonce] = useState(() => {
     return parseInt(localStorage.getItem("nonce") || "0");
   });
-
+  const { data: toChainBalance } = useBalance({
+    address: bridge_address(to.chainID) as `0x${string}`,
+    token: token_address(to.chainID) as `0x${string}`,
+    chainId: to.chainID,
+    watch: true,
+  });
   const { config } = usePrepareContractWrite({
     address: bridge_address(from.chainID) as `0x${string}`,
     abi: bridge.abi,
@@ -56,6 +64,7 @@ export default function SendConfig({
     isError: isSwapError,
     write: swapWrite,
   } = useContractWrite(config);
+  console.log("toChainBalance", toChainBalance?.formatted);
 
   const handleSend = async () => {
     if (from.chainID === 0 || to.chainID === 0) {
@@ -70,6 +79,12 @@ export default function SendConfig({
     if (from.chainID !== chain?.id) {
       await switchNetwork!(from.chainID);
       return;
+    }
+    if (
+      toChainBalance &&
+      Number(sendValue) > Number(toChainBalance.formatted)
+    ) {
+      return toast.error("Insufficient balance on the destination chain");
     }
 
     //TODO: toast
