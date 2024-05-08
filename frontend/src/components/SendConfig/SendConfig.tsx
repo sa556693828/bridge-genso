@@ -81,6 +81,7 @@ export default function SendConfig({
     }
     if (
       toChainBalance &&
+      to.chainID === 80001 &&
       Number(sendValue) > Number(toChainBalance.formatted)
     ) {
       return toast.error("Insufficient balance on the destination chain");

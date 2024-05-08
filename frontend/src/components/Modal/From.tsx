@@ -27,7 +27,7 @@ export default function From({
   balance,
 }: FromProps) {
   const truncatedNumber =
-    balance === "" ? Math.floor(Number(balance) * 1e5) / 1e5 : 0;
+    balance === "" ? 0 : Math.floor(Number(balance) * 1e5) / 1e5;
   return (
     <div className="flex h-[35%] w-full flex-col justify-between gap-4 rounded-3xl bg-white px-6 py-12 shadow-xl">
       <div className="flex w-full justify-between">

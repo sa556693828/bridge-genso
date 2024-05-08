@@ -15,16 +15,22 @@ import BaseLayout from "@/components/layouts/BasicLayout";
 import { publicProvider } from "wagmi/providers/public";
 import { infuraProvider } from "@wagmi/core/providers/infura";
 import { Toaster } from "react-hot-toast";
+import { alchemyProvider } from "@wagmi/core/providers/alchemy";
 
 const infuraKey = process.env.NEXT_PUBLIC_INFURA_API_KEY as string;
+const alchemyKey = process.env.NEXT_PUBLIC_ALCHEMY_API_KEY as string;
 
 const { chains, publicClient } = configureChains(
-  [sepolia, polygonMumbai, bscTestnet],
-  [infuraProvider({ apiKey: infuraKey }), publicProvider()]
+  [sepolia, bscTestnet, polygonMumbai, polygon],
+  [
+    infuraProvider({ apiKey: infuraKey }),
+    publicProvider(),
+    alchemyProvider({ apiKey: alchemyKey }),
+  ],
 );
 const { connectors } = getDefaultWallets({
   appName: "Demo",
-  projectId: "631e3d900609032a9571370557f3cef1",
+  projectId: process.env.NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID!,
   chains: chains,
 });
 const wagmiConfig = createConfig({
