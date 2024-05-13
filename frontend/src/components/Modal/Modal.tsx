@@ -8,7 +8,8 @@ import { Option } from "@/types";
 import { token_address } from "@/utils/constants";
 import SendConfig from "../SendConfig/SendConfig";
 import { normalizeInput } from "@/helper/normalizeInput";
-import { useAccount, useBalance } from "wagmi";
+import { useAccount, useBalance, useReadContracts } from "wagmi";
+import { Address, erc20Abi } from "viem";
 
 interface ModalProps {
   selected: Option;
@@ -34,11 +35,11 @@ export default function Modal({ selected }: ModalProps) {
       scanWeb: "https://sepolia.etherscan.io/",
     },
     {
-      token: "Mumbai",
-      chainID: 80001,
-      address: token_address(80001),
+      token: "Amoy",
+      chainID: 80002,
+      address: token_address(80002),
       image: matic,
-      scanWeb: "https://mumbai.polygonscan.com/",
+      scanWeb: "https://amoy.polygonscan.com/",
     },
     {
       token: "BscTestnet",
@@ -56,13 +57,11 @@ export default function Modal({ selected }: ModalProps) {
     address: address,
     token: token_address(fromChain.chainID) as `0x${string}`,
     chainId: fromChain.chainID,
-    watch: true,
   });
   const { data: toBalance } = useBalance({
     address: address,
     token: token_address(toChain.chainID) as `0x${string}`,
     chainId: toChain.chainID,
-    watch: true,
   });
 
   const handleFromSelect = (option: Option) => {
@@ -102,7 +101,7 @@ export default function Modal({ selected }: ModalProps) {
           menuValue={fromChain}
           inputValue={sendValue}
           onChange={handleSendValue}
-          balance={fromChain.chainID === 0 ? "" : data?.formatted}
+          balance={fromChain.chainID === 0 && data ? "" : data?.formatted}
         />
         <div
           className="flex h-12 w-12 cursor-pointer items-center justify-center rounded-full transition-all hover:bg-black/20 active:bg-black/60"
@@ -118,7 +117,9 @@ export default function Modal({ selected }: ModalProps) {
           menuValue={toChain}
           inputValue={sendValue}
           inputDisabled={true}
-          balance={toChain.chainID === 0 ? "" : toBalance?.formatted}
+          balance={
+            toChain.chainID === 0 && toBalance ? "" : toBalance?.formatted
+          }
         />
       </div>
       <SendConfig

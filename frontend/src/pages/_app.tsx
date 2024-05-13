@@ -1,67 +1,54 @@
 import "@/styles/globals.css";
 import type { AppProps } from "next/app";
 import "@rainbow-me/rainbowkit/styles.css";
-import { getDefaultWallets, RainbowKitProvider } from "@rainbow-me/rainbowkit";
-import { configureChains, createConfig, WagmiConfig } from "wagmi";
-import {
-  mainnet,
-  polygon,
-  sepolia,
-  polygonMumbai,
-  bsc,
-  bscTestnet,
-} from "wagmi/chains";
+import { getDefaultConfig, RainbowKitProvider } from "@rainbow-me/rainbowkit";
+import { WagmiProvider, http } from "wagmi";
+import { sepolia, bscTestnet, polygonAmoy } from "wagmi/chains";
 import BaseLayout from "@/components/layouts/BasicLayout";
-import { publicProvider } from "wagmi/providers/public";
-import { infuraProvider } from "@wagmi/core/providers/infura";
 import { Toaster } from "react-hot-toast";
-import { alchemyProvider } from "@wagmi/core/providers/alchemy";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 const infuraKey = process.env.NEXT_PUBLIC_INFURA_API_KEY as string;
-const alchemyKey = process.env.NEXT_PUBLIC_ALCHEMY_API_KEY as string;
 
-const { chains, publicClient } = configureChains(
-  [sepolia, bscTestnet, polygonMumbai, polygon],
-  [
-    infuraProvider({ apiKey: infuraKey }),
-    publicProvider(),
-    alchemyProvider({ apiKey: alchemyKey }),
-  ],
-);
-const { connectors } = getDefaultWallets({
-  appName: "Demo",
+const wagmiConfig = getDefaultConfig({
+  ssr: true,
+  appName: "Bridge Demo",
   projectId: process.env.NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID!,
-  chains: chains,
+  chains: [sepolia, polygonAmoy, bscTestnet],
+  transports: {
+    [sepolia.id]: http(`https://sepolia.infura.io/v3/${infuraKey}`),
+    [polygonAmoy.id]: http(`https://polygon-amoy.infura.io/v3/${infuraKey}`),
+    [bscTestnet.id]: http(),
+  },
 });
-const wagmiConfig = createConfig({
-  autoConnect: true,
-  connectors,
-  publicClient,
-});
+
+const queryClient = new QueryClient();
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
-    <WagmiConfig config={wagmiConfig}>
-      <RainbowKitProvider chains={chains}>
-        <BaseLayout>
-          <Toaster
-            toastOptions={{
-              style: {
-                background: "#0F0F0F",
-                paddingTop: "6px",
-                paddingBottom: "6px",
-                paddingRight: "10px",
-                paddingLeft: "10px",
-                border: "1px solid #B4FF78",
-                color: "#B4FF78",
-                fontSize: "12px",
-                fontFamily: "Digital Numbers",
-              },
-            }}
-          />
-          <Component {...pageProps} />
-        </BaseLayout>
-      </RainbowKitProvider>
-    </WagmiConfig>
+    <WagmiProvider config={wagmiConfig}>
+      <QueryClientProvider client={queryClient}>
+        <RainbowKitProvider>
+          <BaseLayout>
+            <Toaster
+              toastOptions={{
+                style: {
+                  background: "#0F0F0F",
+                  paddingTop: "6px",
+                  paddingBottom: "6px",
+                  paddingRight: "10px",
+                  paddingLeft: "10px",
+                  border: "1px solid #B4FF78",
+                  color: "#B4FF78",
+                  fontSize: "12px",
+                  fontFamily: "Digital Numbers",
+                },
+              }}
+            />
+            <Component {...pageProps} />
+          </BaseLayout>
+        </RainbowKitProvider>
+      </QueryClientProvider>
+    </WagmiProvider>
   );
 }

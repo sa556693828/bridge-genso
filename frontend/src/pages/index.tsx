@@ -4,7 +4,6 @@ import Modal from "@/components/Modal/Modal";
 import MV from "@/components/assets/token.jpeg";
 import { Option } from "@/types";
 import Footer from "@/components/Footer/Footer";
-import { useAccount } from "wagmi";
 
 export default function Home() {
   const options: Option[] = [

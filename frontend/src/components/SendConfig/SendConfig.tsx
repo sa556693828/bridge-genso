@@ -1,14 +1,10 @@
 import { useEffect, useState } from "react";
-import useSwap from "@/hooks/useSwap";
 import { Option, SwapProps } from "@/types";
 import {
   useAccount,
-  useBalance,
-  useContractRead,
-  useContractWrite,
-  useNetwork,
-  usePrepareContractWrite,
-  useSwitchNetwork,
+  useSwitchChain,
+  useWaitForTransactionReceipt,
+  useWriteContract,
 } from "wagmi";
 import { toast } from "react-hot-toast";
 import bridge from "@/components/abi/bridge.json";
@@ -29,8 +25,8 @@ export default function SendConfig({
   balance,
 }: SendProps) {
   const [isLoading, setIsLoading] = useState(false);
-  const { chain } = useNetwork();
-  const { switchNetwork } = useSwitchNetwork();
+  const { chain } = useAccount();
+  const { switchChain } = useSwitchChain();
   const [txHash, setTxHash] = useState<string | undefined>("");
   const { address } = useAccount();
   const fromToken = "MV";
@@ -38,32 +34,21 @@ export default function SendConfig({
   const [nonce, setNonce] = useState(() => {
     return parseInt(localStorage.getItem("nonce") || "0");
   });
-  const { data: toChainBalance } = useBalance({
-    address: bridge_address(to.chainID) as `0x${string}`,
-    token: token_address(to.chainID) as `0x${string}`,
-    chainId: to.chainID,
-    watch: true,
-  });
-  const { config } = usePrepareContractWrite({
-    address: bridge_address(from.chainID) as `0x${string}`,
-    abi: bridge.abi,
-    functionName: "swap",
-    args: [
-      address,
-      Number(sendValue) * 1000000000000000000,
-      nonce,
-      from.chainID,
-      fromToken,
-      toToken,
-      to.chainID,
-    ],
-  });
+  // const { data: toChainBalance } = useBalance({
+  //   address: bridge_address(to.chainID) as `0x${string}`,
+  //   token: token_address(to.chainID) as `0x${string}`,
+  //   chainId: to.chainID,
+  // });
+
   const {
+    writeContract: swapWrite,
     data: swapData,
     isSuccess: isSwapSuccess,
     isError: isSwapError,
-    write: swapWrite,
-  } = useContractWrite(config);
+  } = useWriteContract();
+  const swapResult = useWaitForTransactionReceipt({
+    hash: swapData,
+  });
 
   const handleSend = async () => {
     if (from.chainID === 0 || to.chainID === 0) {
@@ -76,21 +61,34 @@ export default function SendConfig({
       return toast.error("Insufficient balance");
     }
     if (from.chainID !== chain?.id) {
-      await switchNetwork!(from.chainID);
+      await switchChain!({ chainId: from.chainID });
       return;
     }
-    if (
-      toChainBalance &&
-      to.chainID === 80001 &&
-      Number(sendValue) > Number(toChainBalance.formatted)
-    ) {
-      return toast.error("Insufficient balance on the destination chain");
-    }
+    // if (
+    //   toChainBalance &&
+    //   to.chainID === 80002 &&
+    //   Number(sendValue) > Number(toChainBalance.formatted)
+    // ) {
+    //   return toast.error("Insufficient balance on the destination chain");
+    // }
 
     //TODO: toast
     setIsLoading(true);
     try {
-      await swapWrite?.();
+      await swapWrite?.({
+        address: bridge_address(from.chainID) as `0x${string}`,
+        abi: bridge.abi,
+        functionName: "swap",
+        args: [
+          address,
+          Number(sendValue) * 1000000000000000000,
+          nonce,
+          from.chainID,
+          fromToken,
+          toToken,
+          to.chainID,
+        ],
+      });
     } catch (error) {
       console.log(error);
     }
@@ -111,20 +109,22 @@ export default function SendConfig({
       updateNonce();
     }
   }, [isSwapSuccess]);
+
   useEffect(() => {
-    if (isSwapSuccess) {
+    console.debug("approveResult changed");
+    if (swapResult.isSuccess) {
       if (swapData) {
-        setTxHash(`${from.scanWeb}tx/${swapData?.hash}`);
+        setTxHash(`${from.scanWeb}tx/${swapData}`);
         toast.remove();
         toast.success("success");
       }
       setIsLoading(false);
-    } else if (isSwapError) {
+    } else if (swapResult.isError) {
       toast.remove();
       toast.error("fail");
       setIsLoading(false);
     }
-  }, [isSwapError, isSwapSuccess, swapData]);
+  }, [swapResult.isSuccess, isSwapError, isSwapSuccess, swapData]);
 
   return (
     <div className="flex h-full w-1/2 flex-col items-start gap-6">
