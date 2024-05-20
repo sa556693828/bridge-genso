@@ -34,7 +34,7 @@ export default function Menu({ options, onSelect, selected }: MenuProps) {
           isOpen
             ? "h-fit cursor-pointer opacity-100"
             : "pointer-events-none h-0 opacity-0"
-        } absolute top-[50px] z-50 min-w-44 rounded-lg bg-white py-2 shadow-2xl transition-all`}
+        } absolute top-[50px] z-50 min-w-52 rounded-lg bg-white py-2 shadow-2xl transition-all`}
       >
         {options.map((option, index) => (
           <div

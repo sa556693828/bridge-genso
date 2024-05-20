@@ -3,7 +3,16 @@ import type { AppProps } from "next/app";
 import "@rainbow-me/rainbowkit/styles.css";
 import { getDefaultConfig, RainbowKitProvider } from "@rainbow-me/rainbowkit";
 import { WagmiProvider, http } from "wagmi";
-import { sepolia, bscTestnet, polygonAmoy } from "wagmi/chains";
+import {
+  sepolia,
+  bscTestnet,
+  polygonAmoy,
+  avalancheFuji,
+  blastSepolia,
+  astarZkEVM,
+  astarZkyoto,
+  immutableZkEvmTestnet,
+} from "wagmi/chains";
 import BaseLayout from "@/components/layouts/BasicLayout";
 import { Toaster } from "react-hot-toast";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
@@ -14,11 +23,23 @@ const wagmiConfig = getDefaultConfig({
   ssr: true,
   appName: "Bridge Demo",
   projectId: process.env.NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID!,
-  chains: [sepolia, polygonAmoy, bscTestnet],
+  chains: [
+    sepolia,
+    polygonAmoy,
+    bscTestnet,
+    avalancheFuji,
+    blastSepolia,
+    astarZkyoto,
+    immutableZkEvmTestnet,
+  ],
   transports: {
     [sepolia.id]: http(`https://sepolia.infura.io/v3/${infuraKey}`),
     [polygonAmoy.id]: http(`https://polygon-amoy.infura.io/v3/${infuraKey}`),
     [bscTestnet.id]: http(),
+    [avalancheFuji.id]: http(),
+    [blastSepolia.id]: http(),
+    [astarZkyoto.id]: http(),
+    [immutableZkEvmTestnet.id]: http(),
   },
 });
 

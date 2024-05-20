@@ -114,7 +114,7 @@ export default function SendConfig({
     console.debug("approveResult changed");
     if (swapResult.isSuccess) {
       if (swapData) {
-        setTxHash(`${from.scanWeb}tx/${swapData}`);
+        setTxHash(`${from.scanWeb}/tx/${swapData}`);
         toast.remove();
         toast.success("success");
       }
