@@ -51,7 +51,7 @@ export default function Modal({ selected }: ModalProps) {
       chainID: 80002,
       address: token_address(80002),
       image: matic,
-      scanWeb: polygonAmoy.blockExplorers.default.url,
+      scanWeb: "https://amoy.polygonscan.com",
     },
     {
       token: "BscTestnet",
