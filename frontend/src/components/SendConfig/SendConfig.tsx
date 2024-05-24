@@ -55,8 +55,6 @@ export default function SendConfig({
   console.log("isLoading", isLoading);
   console.log("swapIng", swapIng);
   const handleSend = async () => {
-    setIsLoading(true);
-    setSwapIng(true);
     if (!swapWrite) return;
     if (from.chainID === 0 || to.chainID === 0) {
       return toast.error("Please select the network");
@@ -71,6 +69,7 @@ export default function SendConfig({
       await switchChain!({ chainId: from.chainID });
       return;
     }
+    setIsLoading(true);
     // if (
     //   toChainBalance &&
     //   to.chainID === 80002 &&
@@ -80,6 +79,7 @@ export default function SendConfig({
     // }
 
     try {
+      setSwapIng(true);
       await swapWrite(
         {
           address: bridge_address(from.chainID) as `0x${string}`,
