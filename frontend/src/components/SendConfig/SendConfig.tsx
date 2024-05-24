@@ -32,7 +32,7 @@ export default function SendConfig({
   const fromToken = "MV";
   const toToken = "MV";
   const [nonce, setNonce] = useState(() => {
-    return parseInt(localStorage.getItem("nonce") || "0");
+    return parseInt(localStorage.getItem("nonce") || "20000");
   });
   // const { data: toChainBalance } = useBalance({
   //   address: bridge_address(to.chainID) as `0x${string}`,
@@ -91,6 +91,7 @@ export default function SendConfig({
       });
     } catch (error) {
       console.log(error);
+      setIsLoading(false);
     }
   };
 
@@ -117,6 +118,7 @@ export default function SendConfig({
         setTxHash(`${from.scanWeb}/tx/${swapData}`);
         toast.remove();
         toast.success("success");
+        setIsLoading(false);
       }
       setIsLoading(false);
     } else if (swapResult.isError) {
@@ -124,7 +126,14 @@ export default function SendConfig({
       toast.error("fail");
       setIsLoading(false);
     }
-  }, [swapResult.isSuccess, isSwapError, isSwapSuccess, swapData]);
+  }, [
+    swapResult.isSuccess,
+    swapResult.isError,
+    swapResult,
+    isSwapError,
+    isSwapSuccess,
+    swapData,
+  ]);
 
   return (
     <div className="flex h-full w-1/2 flex-col items-start gap-6">
