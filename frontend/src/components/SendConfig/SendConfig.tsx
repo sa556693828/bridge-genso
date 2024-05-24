@@ -16,6 +16,7 @@ interface SendProps {
   to: Option;
   sendValue?: string;
   balance?: string;
+  handleReFetch: () => void;
 }
 
 export default function SendConfig({
@@ -23,8 +24,10 @@ export default function SendConfig({
   to,
   sendValue,
   balance,
+  handleReFetch,
 }: SendProps) {
   const [isLoading, setIsLoading] = useState(false);
+  const [swapIng, setSwapIng] = useState(false);
   const { chain } = useAccount();
   const { switchChain } = useSwitchChain();
   const [txHash, setTxHash] = useState<string | undefined>("");
@@ -49,8 +52,12 @@ export default function SendConfig({
   const swapResult = useWaitForTransactionReceipt({
     hash: swapData,
   });
-
+  console.log("isLoading", isLoading);
+  console.log("swapIng", swapIng);
   const handleSend = async () => {
+    setIsLoading(true);
+    setSwapIng(true);
+    if (!swapWrite) return;
     if (from.chainID === 0 || to.chainID === 0) {
       return toast.error("Please select the network");
     }
@@ -72,25 +79,32 @@ export default function SendConfig({
     //   return toast.error("Insufficient balance on the destination chain");
     // }
 
-    //TODO: toast
-    setIsLoading(true);
     try {
-      await swapWrite?.({
-        address: bridge_address(from.chainID) as `0x${string}`,
-        abi: bridge.abi,
-        functionName: "swap",
-        args: [
-          address,
-          Number(sendValue) * 1000000000000000000,
-          nonce,
-          from.chainID,
-          fromToken,
-          toToken,
-          to.chainID,
-        ],
-      });
+      await swapWrite(
+        {
+          address: bridge_address(from.chainID) as `0x${string}`,
+          abi: bridge.abi,
+          functionName: "swap",
+          args: [
+            address,
+            Number(sendValue) * 1000000000000000000,
+            nonce,
+            from.chainID,
+            fromToken,
+            toToken,
+            to.chainID,
+          ],
+        },
+        {
+          onError(error: any) {
+            console.error("Error swaping:", error);
+            setSwapIng(false);
+          },
+        },
+      );
     } catch (error) {
       console.log(error);
+    } finally {
       setIsLoading(false);
     }
   };
@@ -113,18 +127,21 @@ export default function SendConfig({
 
   useEffect(() => {
     console.debug("approveResult changed");
+    if (!swapResult) return;
     if (swapResult.isSuccess) {
+      handleReFetch();
       if (swapData) {
         setTxHash(`${from.scanWeb}/tx/${swapData}`);
         toast.remove();
         toast.success("success");
-        setIsLoading(false);
+        setSwapIng(false);
       }
-      setIsLoading(false);
+      setSwapIng(false);
     } else if (swapResult.isError) {
+      handleReFetch();
       toast.remove();
       toast.error("fail");
-      setIsLoading(false);
+      setSwapIng(false);
     }
   }, [
     swapResult.isSuccess,
@@ -152,8 +169,9 @@ export default function SendConfig({
         <button
           className="flex w-full items-center justify-center rounded-2xl bg-button px-3 py-3 shadow-2xl hover:shadow active:shadow-lg"
           onClick={handleSend}
+          disabled={isLoading || swapIng}
         >
-          {isLoading ? <span className="loader" /> : "Send"}
+          {isLoading || swapIng ? <span className="loader" /> : "Send"}
         </button>
       </div>
       {txHash && (

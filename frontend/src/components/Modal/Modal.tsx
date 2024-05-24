@@ -92,18 +92,22 @@ export default function Modal({ selected }: ModalProps) {
   const [fromChain, setFromChain] = useState<Option>(options[1]);
   const [toChain, setToChain] = useState<Option>(options[0]);
   const [sendValue, setSendValue] = useState<string | undefined>(undefined);
+
   const { address } = useAccount();
-  const { data } = useBalance({
+  const { data, refetch: refetchFromBalance } = useBalance({
     address: address,
     token: token_address(fromChain.chainID) as `0x${string}`,
     chainId: fromChain.chainID,
   });
-  const { data: toBalance } = useBalance({
+  const { data: toBalance, refetch: refetchToBalance } = useBalance({
     address: address,
     token: token_address(toChain.chainID) as `0x${string}`,
     chainId: toChain.chainID,
   });
-
+  const handleReFetch = () => {
+    refetchFromBalance();
+    refetchToBalance();
+  };
   const handleFromSelect = (option: Option) => {
     setFromChain(option);
     if (option.token === toChain.token) {
@@ -167,6 +171,7 @@ export default function Modal({ selected }: ModalProps) {
         to={toChain}
         sendValue={sendValue}
         balance={data?.formatted}
+        handleReFetch={handleReFetch}
       />
     </>
   );
