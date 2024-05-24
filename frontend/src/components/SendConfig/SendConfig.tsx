@@ -143,14 +143,7 @@ export default function SendConfig({
       toast.error("fail");
       setSwapIng(false);
     }
-  }, [
-    swapResult.isSuccess,
-    swapResult.isError,
-    swapResult,
-    isSwapError,
-    isSwapSuccess,
-    swapData,
-  ]);
+  }, [swapResult.isSuccess, swapResult.isError]);
 
   return (
     <div className="flex h-full w-1/2 flex-col items-start gap-6">
