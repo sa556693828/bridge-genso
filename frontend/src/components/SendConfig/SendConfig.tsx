@@ -52,8 +52,6 @@ export default function SendConfig({
   const swapResult = useWaitForTransactionReceipt({
     hash: swapData,
   });
-  console.log("isLoading", isLoading);
-  console.log("swapIng", swapIng);
   const handleSend = async () => {
     if (!swapWrite) return;
     if (from.chainID === 0 || to.chainID === 0) {

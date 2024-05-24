@@ -106,7 +106,9 @@ export default function Modal({ selected }: ModalProps) {
   });
   const handleReFetch = () => {
     refetchFromBalance();
-    refetchToBalance();
+    setTimeout(() => {
+      refetchToBalance();
+    }, 2000);
   };
   const handleFromSelect = (option: Option) => {
     setFromChain(option);
