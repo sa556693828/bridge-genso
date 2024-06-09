@@ -35,7 +35,7 @@ const wagmiConfig = getDefaultConfig({
   transports: {
     [sepolia.id]: http(`https://sepolia.infura.io/v3/${infuraKey}`),
     [polygonAmoy.id]: http(`https://polygon-amoy.infura.io/v3/${infuraKey}`),
-    [bscTestnet.id]: http(),
+    [bscTestnet.id]: http(`https://bsc-testnet-rpc.publicnode.com`),
     [avalancheFuji.id]: http(),
     [blastSepolia.id]: http(),
     [astarZkyoto.id]: http(),
